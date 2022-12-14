@@ -1,5 +1,13 @@
 # stream-token
 
+This repo, *stream-token*, has the smart contract code and hardhat task to compile, deploy, and verify the contract.
+Check out the other repo, *stream-page*, for the minting page.
+
+Contract created on
+[goerli](https://goerli.etherscan.io/tx/0x9cf7ee275596bed911f8a6511ec7dd7a5a4c24c3cb7f14ffc2364bd278ab0b81),
+and created and verified on
+[mainnet](https://etherscan.io/tx/0xb9a74ee2c1cfeb293a378a8714903ee29d7caa5630a6ea54a3e27c1b032cc5c4).
+
 Copy and fill out:
 
 ```
@@ -36,10 +44,3 @@ $ npx hardhat verify --network goerli 0x[ deployed contract address ] 0x[ deploy
 $ npx hardhat deploy --network ethereum
 $ npx hardhat verify --network ethereum 0x[ deployed contract address ] 0x[ deploying wallet address ]
 ```
-
-Contract created on
-[goerli](https://goerli.etherscan.io/tx/0x9cf7ee275596bed911f8a6511ec7dd7a5a4c24c3cb7f14ffc2364bd278ab0b81),
-and created and verified on
-[mainnet](https://etherscan.io/tx/0xb9a74ee2c1cfeb293a378a8714903ee29d7caa5630a6ea54a3e27c1b032cc5c4).
-
-Minting page at the *stream-page* repo.
