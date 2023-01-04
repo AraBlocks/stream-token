@@ -39,8 +39,8 @@ $ npm install
 $ npx hardhat compile
 
 $ npx hardhat deploy --network goerli
-$ npx hardhat verify --network goerli 0x[ deployed contract address ]
+$ npx hardhat verify --network goerli 0x[ deployed contract address ] [ no constructor arguments ]
 
 $ npx hardhat deploy --network ethereum
-$ npx hardhat verify --network ethereum 0x[ deployed contract address ]
+$ npx hardhat verify --network ethereum 0x[ deployed contract address ] [ no constructor arguments ]
 ```
