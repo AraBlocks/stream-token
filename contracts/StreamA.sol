@@ -1267,7 +1267,7 @@ contract StreamA is Ownable, ERC721B {
     using ECDSA for bytes32;
 
     uint256 public constant FR_PUBLIC = 9900;
-    uint256 public constant FR_MAX = 10000;
+    uint256 public constant totalSupply = 10000;
     uint256 public constant FR_GIFT = 100;
     uint256 public constant FR_PRICE = 0.01 ether;
     uint256 public constant FR_PER_MINT = 100;
@@ -1374,7 +1374,7 @@ contract StreamA is Ownable, ERC721B {
     function gift(address[] calldata receivers) external onlyOwner {
         uint256 supply = _owners.length;
 
-        require(supply + receivers.length <= FR_MAX, "MAX_MINT");
+        require(supply + receivers.length <= totalSupply, "MAX_MINT");
         require(giftedAmount + receivers.length <= FR_GIFT, "NO_GIFTS");
 
         for (uint256 i = 0; i < receivers.length; i++) {
@@ -1428,4 +1428,6 @@ contract StreamA is Ownable, ERC721B {
         return presalerListPurchases[addr];
     }
 
-}
+    function availableToMint() external view returns (uint256) {
+        return totalSupply - _owners.length;
+    }}
