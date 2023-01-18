@@ -1269,9 +1269,9 @@ contract StreamA is Ownable, ERC721B {
     uint256 public constant FR_PUBLIC = 9900;
     uint256 public constant totalSupply = 10000;
     uint256 public constant FR_GIFT = 100;
-    uint256 public constant FR_PRICE = 0.01 ether;
     uint256 public constant FR_PER_MINT = 100;
     uint256 public giftedAmount;
+    uint256 public FR_PRICE;
 
     string public provenance;
     string private _contractURI;
@@ -1288,7 +1288,9 @@ contract StreamA is Ownable, ERC721B {
 
     mapping(address => uint256) public presalerListPurchases;
 
-    constructor() ERC721B("StreamA1", "SA1") { }
+    constructor() ERC721B("StreamA1", "SA1") {
+        FR_PRICE = 0.03 ether;
+    }
 
     // ** - CORE - ** //
 
@@ -1407,6 +1409,10 @@ contract StreamA is Ownable, ERC721B {
 
     function setBaseURI(string calldata URI) external onlyOwner {
         _tokenBaseURI = URI;
+    }
+
+    function setPrice(uint256 amount) external onlyOwner {
+        FR_PRICE = amount;
     }
 
     // ** - MISC - ** //
