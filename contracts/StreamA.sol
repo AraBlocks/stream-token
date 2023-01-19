@@ -1288,7 +1288,7 @@ contract StreamA is Ownable, ERC721B {
 
     mapping(address => uint256) public presalerListPurchases;
 
-    constructor() ERC721B("StreamA1", "SA1") {
+    constructor() ERC721B("StreamA4", "SA4") {
         FR_PRICE = 0.03 ether;
         _tokenBaseURI = "https://sp.rad.live/streampass/";
     }
