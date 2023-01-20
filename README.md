@@ -8,10 +8,12 @@ Contract `StreamA1` created and (much later) verified on
 and created and verified on
 [mainnet](https://etherscan.io/tx/0xb9a74ee2c1cfeb293a378a8714903ee29d7caa5630a6ea54a3e27c1b032cc5c4).
 
-Contract `StreamA4`, the release candidate, created and verified on
+Contract `StreamA4`, the first release candidate, created and verified on
 [goerli](https://goerli.etherscan.io/tx/0x622530d34cfb58c44f619e55a286604ef63cb42d2cda760d60dcef1b65ff51da)
 and created and verified on
 [mainnet](https://etherscan.io/tx/0x3c521562667100ecad679725595698c8f99faa3a620987f6332164b40dd74f34).
+
+Then, updated compiler version 0.8.9 -> 0.8.17. Contract `StreamA5` coming soon...
 
 Copy and fill out:
 
@@ -32,7 +34,7 @@ Set the name and symbol:
 
 ```
 StreamA.sol:1291
-    constructor() ERC721B("StreamA4", "SA4") { }
+    constructor() ERC721B("StreamA5", "SA5") { }
 ```
 
 Deploy and verify:

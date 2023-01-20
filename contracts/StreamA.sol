@@ -2,7 +2,7 @@
 
 // SPDX-License-Identifier: BSD-3-Clause
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Interface of the ERC165 standard, as defined in the
@@ -27,7 +27,7 @@ interface IERC165 {
 
 // File @openzeppelin/contracts/token/ERC721/IERC721.sol@v4.3.2
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Required interface of an ERC721 compliant contract.
@@ -171,7 +171,7 @@ interface IERC721 is IERC165 {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @title ERC721 token receiver interface
@@ -201,7 +201,7 @@ interface IERC721Receiver {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional metadata extension
@@ -229,7 +229,7 @@ interface IERC721Metadata is IERC721 {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Collection of functions related to the address type
@@ -449,7 +449,7 @@ library Address {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Provides information about the current execution context, including the
@@ -476,7 +476,7 @@ abstract contract Context {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Implementation of the {IERC165} interface.
@@ -505,7 +505,7 @@ abstract contract ERC165 is IERC165 {
 // File contracts/Blimpie/ERC721B.sol
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /********************
 * @author: Squeebo *
@@ -894,7 +894,7 @@ abstract contract ERC721B is Context, ERC165, IERC721, IERC721Metadata {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Elliptic Curve Digital Signature Algorithm (ECDSA) operations.
@@ -1117,7 +1117,7 @@ library ECDSA {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev String operations.
@@ -1186,7 +1186,7 @@ library Strings {
 // File @openzeppelin/contracts/access/Ownable.sol@v4.3.2
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -1255,7 +1255,7 @@ abstract contract Ownable is Context {
 }
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /*
       StreamA
