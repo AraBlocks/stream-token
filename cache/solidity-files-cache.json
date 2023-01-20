@@ -1,0 +1,62 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Documents\\code\\code16\\stream-token\\contracts\\StreamA.sol": {
+      "lastModificationDate": 1674254020288,
+      "contentHash": "5f19638eb096357bd5e4af0138171a9c",
+      "sourceName": "contracts/StreamA.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "Address",
+        "Context",
+        "ECDSA",
+        "ERC165",
+        "ERC721B",
+        "IERC165",
+        "IERC721",
+        "IERC721Metadata",
+        "IERC721Receiver",
+        "Ownable",
+        "StreamA",
+        "Strings"
+      ]
+    }
+  }
+}
