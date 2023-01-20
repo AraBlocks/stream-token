@@ -22,10 +22,8 @@ $ cp example.env .env
 Delete for a fresh start:
 
 ```
-/abi/
 /artifacts/
 /cache/
-/data/
 /node-modules/
 /package-lock.json
 ```
