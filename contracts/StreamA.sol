@@ -2,7 +2,7 @@
 
 // SPDX-License-Identifier: BSD-3-Clause
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Interface of the ERC165 standard, as defined in the
@@ -27,7 +27,7 @@ interface IERC165 {
 
 // File @openzeppelin/contracts/token/ERC721/IERC721.sol@v4.3.2
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Required interface of an ERC721 compliant contract.
@@ -171,7 +171,7 @@ interface IERC721 is IERC165 {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @title ERC721 token receiver interface
@@ -201,7 +201,7 @@ interface IERC721Receiver {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional metadata extension
@@ -229,7 +229,7 @@ interface IERC721Metadata is IERC721 {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Collection of functions related to the address type
@@ -449,7 +449,7 @@ library Address {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Provides information about the current execution context, including the
@@ -476,7 +476,7 @@ abstract contract Context {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Implementation of the {IERC165} interface.
@@ -505,7 +505,7 @@ abstract contract ERC165 is IERC165 {
 // File contracts/Blimpie/ERC721B.sol
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /********************
 * @author: Squeebo *
@@ -894,7 +894,7 @@ abstract contract ERC721B is Context, ERC165, IERC721, IERC721Metadata {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Elliptic Curve Digital Signature Algorithm (ECDSA) operations.
@@ -1117,7 +1117,7 @@ library ECDSA {
 
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev String operations.
@@ -1186,7 +1186,7 @@ library Strings {
 // File @openzeppelin/contracts/access/Ownable.sol@v4.3.2
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -1255,7 +1255,7 @@ abstract contract Ownable is Context {
 }
 
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /*
       StreamA
@@ -1272,6 +1272,7 @@ contract StreamA is Ownable, ERC721B {
     uint256 public constant FR_PER_MINT = 100;
     uint256 public giftedAmount;
     uint256 public FR_PRICE;
+    uint256 public PRESALE_LIMIT;
 
     string public provenance;
     string private _contractURI;
@@ -1280,6 +1281,7 @@ contract StreamA is Ownable, ERC721B {
     address private _vaultAddress = 0xC049AF472eEC8ce544765974C7AE88Cf2b133393;
     
     //address private approvelistSigner = 0xC049AF472eEC8ce544765974C7AE88Cf2b133393;
+    address[] internal approvecollections;
     mapping (address => bool) public approvelist;
     mapping (address => bool) public denylist;
 
@@ -1288,8 +1290,9 @@ contract StreamA is Ownable, ERC721B {
 
     mapping(address => uint256) public presalerListPurchases;
 
-    constructor() ERC721B("StreamA1", "SA1") {
-        FR_PRICE = 0.03 ether;
+    constructor() ERC721B("StreamA5", "SA5") {
+        PRESALE_LIMIT = 1000;
+        FR_PRICE = 0.05 ether;
         _tokenBaseURI = "https://sp.rad.live/streampass/";
     }
 
@@ -1323,23 +1326,33 @@ contract StreamA is Ownable, ERC721B {
         require(presalerListPurchases[msg.sender] + tokenQuantity <= FR_PER_MINT, "EXCEED_ALLOC");
         require(tokenQuantity <= FR_PER_MINT, "EXCEED_FR_PER_MINT");
         require(FR_PRICE * tokenQuantity <= msg.value, "INSUFFICIENT_ETH");
+        require(approvelist[msg.sender] || walletHoldsToken(msg.sender), "NOT_APPROVED_BUYER");
+        require(!denylist[msg.sender], "NOT_APPROVED_BUYER");
 
         uint256 supply = _owners.length;
-        require(supply + tokenQuantity <= FR_PUBLIC, "EXCEED_MAX_SALE_SUPPLY");
-        
-        require(approvelist[msg.sender], "NOT_APPROVED_BUYER");
-        require(!denylist[msg.sender], "NOT_APPROVED_BUYER");
-        //(bool success, string memory reason) = canMint(msg.sender);
-        //require(success, reason);
-
+        require(supply + tokenQuantity <= PRESALE_LIMIT, "EXCEED_MAX_PRESALE_SUPPLY");
         presalerListPurchases[msg.sender] += tokenQuantity;
         for (uint256 i = 0; i < tokenQuantity; i++) {
-            _mint( msg.sender, supply++);
+            _mint(msg.sender, supply++);
+        }
+
+        if (supply == PRESALE_LIMIT) {
+            presaleLive = false;
+            saleLive = true;
+            FR_PRICE = 0.25 ether;
         }
     }
 
     // ** - ADMIN - ** //
-    
+
+    function indexOf(address[] memory arr, address searchFor) private pure returns (int256) {
+        for (uint256 i = 0; i < arr.length; i++) {
+            if (arr[i] == searchFor) {
+            return int256(i);
+            }
+        }
+        return -1; // not found
+    }
     function addToApproveList(address _newAddress) external onlyOwner {
         approvelist[_newAddress] = true;
     }
@@ -1348,6 +1361,37 @@ contract StreamA is Ownable, ERC721B {
         approvelist[_address] = false;
     }
     
+    function addToApproveCollections(address _newAddress) public onlyOwner {
+        int256 index = indexOf(approvecollections, _newAddress);
+        require(index == -1, "Collection is already Approved");
+        approvecollections.push(_newAddress);
+    }
+    
+    function removeFromApproveCollections(address _address) public onlyOwner {
+        int256 index = indexOf(approvecollections, _address);
+        require(index > -1, "Collection Address not available");
+
+        uint256 length = approvecollections.length - 1;
+        for (uint256 i = uint256(index); i < length; i++) {
+            uint256 curr = i + 1;
+            approvecollections[i] = approvecollections[curr];
+        }
+        approvecollections.pop(); // delete the last item
+    }
+    
+    function walletHoldsToken(address _wallet) public view returns (bool) {
+        uint256 contractLength = approvecollections.length;
+        bool results = false;
+        while (!results) {
+            for (uint256 i = 0; i < contractLength; i++) {
+                address contractaddress = approvecollections[i];
+                results = IERC721(contractaddress).balanceOf(_wallet) > 0;
+            }
+        }
+
+        return results;
+    }
+
     function addToDenyList(address _newAddress) external onlyOwner {
         denylist[_newAddress] = true;
     }
@@ -1356,6 +1400,20 @@ contract StreamA is Ownable, ERC721B {
         denylist[_address] = false;
     }
 
+    function addMultipleToApproveCollections(address[] calldata _addresses) external onlyOwner {
+        require(_addresses.length <= 10000, "Provide less addresses in one function call");
+        for (uint256 i = 0; i < _addresses.length; i++) {
+            addToApproveCollections(_addresses[i]);
+        }
+    }
+
+    function removeMultipleFromApproveCollections(address[] calldata _addresses) external onlyOwner {
+        require(_addresses.length <= 10000, "Provide less addresses in one function call");
+        for (uint256 i = 0; i < _addresses.length; i++) {
+            removeFromApproveCollections(_addresses[i]);
+        }
+    }
+    
     function addMultipleToApproveList(address[] calldata _addresses) external onlyOwner {
         require(_addresses.length <= 10000, "Provide less addresses in one function call");
         for (uint256 i = 0; i < _addresses.length; i++) {
@@ -1369,7 +1427,7 @@ contract StreamA is Ownable, ERC721B {
             approvelist[_addresses[i]] = false;
         }
     }
-    
+
     function withdraw() external onlyOwner {
         payable(_vaultAddress).transfer(address(this).balance);
     }
@@ -1386,14 +1444,18 @@ contract StreamA is Ownable, ERC721B {
         }
     }
 
-    function togglePresaleStatus() external onlyOwner {
+    function togglePresaleStatus() public onlyOwner {
         presaleLive = !presaleLive;
     }
 
-    function toggleSaleStatus() external onlyOwner {
+    function toggleSaleStatus() public onlyOwner {
         saleLive = !saleLive;
+        if (saleLive) {
+            FR_PRICE = 0.25 ether;
+        } else {
+            FR_PRICE = 0.05 ether;
+        }
     }
-
     // ** - SETTERS - ** //
 
     function setSignerAddress(address addr) external onlyOwner {
@@ -1416,6 +1478,10 @@ contract StreamA is Ownable, ERC721B {
         FR_PRICE = amount;
     }
 
+    function setPreSaleLimit(uint256 amount) external onlyOwner {
+        PRESALE_LIMIT = amount;
+    }
+
     // ** - MISC - ** //
 
     function setProvenanceHash(string calldata hash) external onlyOwner {
@@ -1436,5 +1502,10 @@ contract StreamA is Ownable, ERC721B {
     }
 
     function availableToMint() external view returns (uint256) {
-        return totalSupply - _owners.length;
-    }}
+        return FR_PUBLIC - _owners.length;
+    }
+
+    function approvedCollections() external view returns (address[] memory) {
+        return approvecollections;
+    }
+}
