@@ -2,11 +2,11 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Documents\\code\\code16\\stream-token\\contracts\\StreamA.sol": {
-      "lastModificationDate": 1670270718010,
-      "contentHash": "b85762b0fec31a8f3815bac0eda6c40d",
+      "lastModificationDate": 1674254020288,
+      "contentHash": "5f19638eb096357bd5e4af0138171a9c",
       "sourceName": "contracts/StreamA.sol",
       "solcConfig": {
-        "version": "0.8.9",
+        "version": "0.8.17",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -30,18 +30,18 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.8.9",
-        "^0.8.9",
-        "^0.8.9",
-        "^0.8.9",
-        "^0.8.9",
-        "^0.8.9",
-        "^0.8.9",
-        "^0.8.9",
-        "^0.8.9",
-        "^0.8.9",
-        "^0.8.9",
-        "^0.8.9"
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17"
       ],
       "artifacts": [
         "Address",

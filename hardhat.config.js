@@ -7,7 +7,7 @@ const { ALCHEMY_GOERLI_API_KEY, ALCHEMY_MAINNET_API_KEY, ETHERSCAN_API_KEY, WALL
 
 module.exports = {
   solidity: {
-    version: '0.8.9',
+    version: '0.8.17',
     settings: {
       optimizer: { enabled: true, runs: 1000 }
     }
