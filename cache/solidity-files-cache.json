@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Documents\\code\\code16\\stream-token\\contracts\\StreamA.sol": {
-      "lastModificationDate": 1674254020288,
-      "contentHash": "5f19638eb096357bd5e4af0138171a9c",
+      "lastModificationDate": 1674679678997,
+      "contentHash": "661682ab330fbe6fab09747a13eb1b66",
       "sourceName": "contracts/StreamA.sol",
       "solcConfig": {
         "version": "0.8.17",
