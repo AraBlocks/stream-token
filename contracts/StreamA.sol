@@ -1,7 +1,5 @@
 // File @openzeppelin/contracts/utils/introspection/IERC165.sol@v4.3.2
 
-// SPDX-License-Identifier: BSD-3-Clause
-
 pragma solidity ^0.8.17;
 
 /**
@@ -166,10 +164,7 @@ interface IERC721 is IERC165 {
     ) external;
 }
 
-
 // File @openzeppelin/contracts/token/ERC721/IERC721Receiver.sol@v4.3.2
-
-
 
 pragma solidity ^0.8.17;
 
@@ -471,10 +466,7 @@ abstract contract Context {
     }
 }
 
-
 // File @openzeppelin/contracts/utils/introspection/ERC165.sol@v4.3.2
-
-
 
 pragma solidity ^0.8.17;
 
@@ -502,7 +494,6 @@ abstract contract ERC165 is IERC165 {
 }
 
 // File @openzeppelin/contracts/interfaces/IERC2981.sol@v4.4.1
-// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.17;
 
