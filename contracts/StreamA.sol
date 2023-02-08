@@ -1511,7 +1511,7 @@ contract StreamA is Ownable, ERC721Royalty {
         if (supply == PRESALE_LIMIT) {
             presaleLive = false;
             saleLive = true;
-            FR_PRICE = 0.25 ether;
+            FR_PRICE = 0.15 ether;
         }
     }
 
@@ -1623,7 +1623,7 @@ contract StreamA is Ownable, ERC721Royalty {
     function toggleSaleStatus() public onlyOwner {
         saleLive = !saleLive;
         if (saleLive) {
-            FR_PRICE = 0.25 ether;
+            FR_PRICE = 0.15 ether;
         } else {
             FR_PRICE = 0.05 ether;
         }
