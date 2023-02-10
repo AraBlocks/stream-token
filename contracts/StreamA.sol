@@ -1434,8 +1434,8 @@ contract StreamA is Ownable, ERC721Royalty {
     string private _contractURI;
     string private _tokenBaseURI;
     address private _signerAddress = 0x9D582750f758b6A2dC2397669E55A19099AA18ee;
-    address private _vaultAddress = 0xC049AF472eEC8ce544765974C7AE88Cf2b133393;
-    
+    address private _vaultAddress = 0x8d6f7759ED866d850c15C35E665DE7e06765Ff38;
+   
     //address private approvelistSigner = 0xC049AF472eEC8ce544765974C7AE88Cf2b133393;
     address[] internal approvecollections;
     mapping (address => bool) public approvelist;
@@ -1446,10 +1446,11 @@ contract StreamA is Ownable, ERC721Royalty {
 
     mapping(address => uint256) public presalerListPurchases;
 
-    constructor() ERC721B("Stream A7", "SA7") {
+    constructor() ERC721B("Stream A8", "SA8") {
         PRESALE_LIMIT = 1000;
         FR_PRICE = 0.05 ether;
         _tokenBaseURI = "https://sp.rad.live/streampass/";
+        setDefaultRoyalty(_vaultAddress, 3000);
     }
 
     // ** - CORE - ** //
