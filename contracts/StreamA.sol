@@ -1,5 +1,5 @@
 // File @openzeppelin/contracts/utils/introspection/IERC165.sol@v4.3.2
-
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
 /**
@@ -1424,7 +1424,6 @@ contract StreamA is Ownable, ERC721Royalty {
     using ECDSA for bytes32;
 
     uint256 public constant FR_PUBLIC = 9900;
-    uint256 public constant totalSupply = 10000;
     uint256 public constant FR_GIFT = 100;
     uint256 public constant FR_PER_MINT = 100;
     uint256 public giftedAmount;
@@ -1607,7 +1606,7 @@ contract StreamA is Ownable, ERC721Royalty {
     function gift(address[] calldata receivers) external onlyOwner {
         uint256 supply = _owners.length;
 
-        require(supply + receivers.length <= totalSupply, "MAX_MINT");
+        require(supply + receivers.length <= FR_PUBLIC, "MAX_MINT");
         require(giftedAmount + receivers.length <= FR_GIFT, "NO_GIFTS");
 
         for (uint256 i = 0; i < receivers.length; i++) {
@@ -1675,6 +1674,10 @@ contract StreamA is Ownable, ERC721Royalty {
 
     function availableToMint() external view returns (uint256) {
         return FR_PUBLIC - _owners.length;
+    }
+
+    function totalSupply() external view returns (uint256) {
+        return _owners.length;
     }
 
     function approvedCollections() external view returns (address[] memory) {
