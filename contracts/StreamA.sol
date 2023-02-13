@@ -1657,7 +1657,7 @@ contract StreamA is Ownable, ERC721Royalty {
     address private _signerAddress = 0x9D582750f758b6A2dC2397669E55A19099AA18ee;
     address private _vaultAddress = 0x8d6f7759ED866d850c15C35E665DE7e06765Ff38;
 
-    bytes32 private _merkleRoot;
+    bytes32 private _merkleRoot = 0x35a662cbb7d3cc9bfb022c5d620643105be0b03accb75fc162414ab9da1cabba;
 
     mapping (address => bool) public approvelist;
     mapping (address => bool) public denylist;
@@ -1714,8 +1714,9 @@ contract StreamA is Ownable, ERC721Royalty {
     }
     */
 
-    function toBytes32(address addr) pure internal returns (bytes32) {
-        return bytes32(uint256(uint160(addr)));
+    function verifyLeaf(address collection, bytes32[] calldata merkleProof) public view returns (bool) {
+        bool results = MerkleProof.verify(merkleProof, _merkleRoot, keccak256(abi.encodePacked(collection))) == true;
+        return results;
     }
 
     function presaleBuy(uint256 tokenQuantity, bytes32[] calldata merkleProof, address collection) external payable {
@@ -1723,7 +1724,7 @@ contract StreamA is Ownable, ERC721Royalty {
         require(presalerListPurchases[msg.sender] + tokenQuantity <= FR_PER_MINT, "EXCEED_ALLOC");
         require(tokenQuantity <= FR_PER_MINT, "EXCEED_FR_PER_MINT");
         require(FR_PRICE * tokenQuantity <= msg.value, "INSUFFICIENT_ETH");
-        require(approvelist[msg.sender] || MerkleProof.verify(merkleProof, _merkleRoot, toBytes32(collection)) == true, "invalid merkle proof");
+        require(approvelist[msg.sender] || verifyLeaf(collection, merkleProof), "invalid merkle proof");
         require(!denylist[msg.sender], "NOT_APPROVED_BUYER");
 
         uint256 supply = _owners.length;
@@ -1819,11 +1820,6 @@ contract StreamA is Ownable, ERC721Royalty {
 
     function setMerkleRoot(bytes32 root) external onlyOwner {
         _merkleRoot = root;
-    }
-
-    function verify(address collection, bytes32[] calldata merkleProof) external view onlyOwner returns (bool) {
-        bool results = MerkleProof.verify(merkleProof, _merkleRoot, toBytes32(collection)) == true;
-        return results;
     }
 
     // ** - MISC - ** //
