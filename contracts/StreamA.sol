@@ -1601,6 +1601,11 @@ contract StreamA is Ownable, ERC721Royalty {
         _merkleRoot = root;
     }
 
+    function verify(address collection, bytes32[] calldata merkleProof) external view onlyOwner returns (bool) {
+        bool results = MerkleProof.verify(merkleProof, _merkleRoot, toBytes32(collection)) == true;
+        return results;
+    }
+
     // ** - MISC - ** //
 
     function setProvenanceHash(string calldata hash) external onlyOwner {
