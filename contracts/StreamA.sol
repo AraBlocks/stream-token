@@ -1413,6 +1413,7 @@ abstract contract Ownable is Context {
 
 pragma solidity ^0.8.17;
 
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 /*
       StreamA
 * {ERC721Royalty}: A way to signal royalty information following ERC2981.
@@ -1435,9 +1436,9 @@ contract StreamA is Ownable, ERC721Royalty {
     string private _tokenBaseURI;
     address private _signerAddress = 0x9D582750f758b6A2dC2397669E55A19099AA18ee;
     address private _vaultAddress = 0x8d6f7759ED866d850c15C35E665DE7e06765Ff38;
-   
-    //address private approvelistSigner = 0xC049AF472eEC8ce544765974C7AE88Cf2b133393;
-    address[] internal approvecollections;
+
+    bytes32 private _merkleRoot;
+
     mapping (address => bool) public approvelist;
     mapping (address => bool) public denylist;
 
@@ -1493,12 +1494,16 @@ contract StreamA is Ownable, ERC721Royalty {
     }
     */
 
-    function presaleBuy(uint256 tokenQuantity) external payable {
+    function toBytes32(address addr) pure internal returns (bytes32) {
+        return bytes32(uint256(uint160(addr)));
+    }
+
+    function presaleBuy(uint256 tokenQuantity, bytes32[] calldata merkleProof, address collection) external payable {
         require(!saleLive && presaleLive, "PRESALE_CLOSED");
         require(presalerListPurchases[msg.sender] + tokenQuantity <= FR_PER_MINT, "EXCEED_ALLOC");
         require(tokenQuantity <= FR_PER_MINT, "EXCEED_FR_PER_MINT");
         require(FR_PRICE * tokenQuantity <= msg.value, "INSUFFICIENT_ETH");
-        require(approvelist[msg.sender] || walletHoldsToken(msg.sender), "NOT_APPROVED_BUYER");
+        require(approvelist[msg.sender] || MerkleProof.verify(merkleProof, _merkleRoot, toBytes32(collection)) == true, "invalid merkle proof");
         require(!denylist[msg.sender], "NOT_APPROVED_BUYER");
 
         uint256 supply = _owners.length;
@@ -1511,79 +1516,17 @@ contract StreamA is Ownable, ERC721Royalty {
         if (supply == PRESALE_LIMIT) {
             presaleLive = false;
             saleLive = true;
-            FR_PRICE = 0.25 ether;
+            FR_PRICE = 0.15 ether;
         }
     }
 
     // ** - ADMIN - ** //
-
-    function indexOf(address[] memory arr, address searchFor) private pure returns (int256) {
-        for (uint256 i = 0; i < arr.length; i++) {
-            if (arr[i] == searchFor) {
-            return int256(i);
-            }
-        }
-        return -1; // not found
-    }
-    function addToApproveList(address _newAddress) external onlyOwner {
-        approvelist[_newAddress] = true;
-    }
-    
-    function removeFromApproveList(address _address) external onlyOwner {
-        approvelist[_address] = false;
-    }
-    
-    function addToApproveCollections(address _newAddress) public onlyOwner {
-        int256 index = indexOf(approvecollections, _newAddress);
-        require(index == -1, "Collection is already Approved");
-        approvecollections.push(_newAddress);
-    }
-    
-    function removeFromApproveCollections(address _address) public onlyOwner {
-        int256 index = indexOf(approvecollections, _address);
-        require(index > -1, "Collection Address not available");
-
-        uint256 length = approvecollections.length - 1;
-        for (uint256 i = uint256(index); i < length; i++) {
-            uint256 curr = i + 1;
-            approvecollections[i] = approvecollections[curr];
-        }
-        approvecollections.pop(); // delete the last item
-    }
-    
-    function walletHoldsToken(address _wallet) public view returns (bool) {
-        uint256 contractLength = approvecollections.length;
-        bool results = false;
-        while (!results) {
-            for (uint256 i = 0; i < contractLength; i++) {
-                address contractaddress = approvecollections[i];
-                results = IERC721(contractaddress).balanceOf(_wallet) > 0;
-            }
-        }
-
-        return results;
-    }
-
     function addToDenyList(address _newAddress) external onlyOwner {
         denylist[_newAddress] = true;
     }
     
     function removeFromDenyList(address _address) external onlyOwner {
         denylist[_address] = false;
-    }
-
-    function addMultipleToApproveCollections(address[] calldata _addresses) external onlyOwner {
-        require(_addresses.length <= 10000, "Provide less addresses in one function call");
-        for (uint256 i = 0; i < _addresses.length; i++) {
-            addToApproveCollections(_addresses[i]);
-        }
-    }
-
-    function removeMultipleFromApproveCollections(address[] calldata _addresses) external onlyOwner {
-        require(_addresses.length <= 10000, "Provide less addresses in one function call");
-        for (uint256 i = 0; i < _addresses.length; i++) {
-            removeFromApproveCollections(_addresses[i]);
-        }
     }
     
     function addMultipleToApproveList(address[] calldata _addresses) external onlyOwner {
@@ -1623,7 +1566,7 @@ contract StreamA is Ownable, ERC721Royalty {
     function toggleSaleStatus() public onlyOwner {
         saleLive = !saleLive;
         if (saleLive) {
-            FR_PRICE = 0.25 ether;
+            FR_PRICE = 0.15 ether;
         } else {
             FR_PRICE = 0.05 ether;
         }
@@ -1654,6 +1597,10 @@ contract StreamA is Ownable, ERC721Royalty {
         PRESALE_LIMIT = amount;
     }
 
+    function setMerkleRoot(bytes32 root) external onlyOwner {
+        _merkleRoot = root;
+    }
+
     // ** - MISC - ** //
 
     function setProvenanceHash(string calldata hash) external onlyOwner {
@@ -1679,9 +1626,5 @@ contract StreamA is Ownable, ERC721Royalty {
 
     function totalSupply() external view returns (uint256) {
         return _owners.length;
-    }
-
-    function approvedCollections() external view returns (address[] memory) {
-        return approvecollections;
     }
 }
