@@ -34,6 +34,11 @@ Contract `Stream A8`, a release candidate, made on
 and
 [mainnet](https://etherscan.io/tx/0xed132cb2efcf63ce1f84676bb29a8836e9f00e513da5038035c86c0a54bc80b3).
 
+Contract `Stream A9`, a release candidate, made on
+[goerli](https://goerli.etherscan.io/tx/0x7eb0799e115cb36bb09fc8007f8179de92a6d436ae5fb3519031a7f37aa0c004)
+and
+[mainnet](https://etherscan.io/tx/0x3404ea6a8f5f7dc9c189e191f03c20e50723e5fd3d2ac5bfdd0f5f240f225b85).
+
 Copy and fill out:
 
 ```

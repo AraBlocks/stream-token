@@ -1490,7 +1490,7 @@ contract StreamA is Ownable, ERC721Royalty {
         return (true, "");
     }
 
-    function presaleBuy(uint256 tokenQuantity, bytes32[] calldata merkleProof, address collection) external payable {
+    function presaleBuy(uint256 tokenQuantity) external payable {
         require(!saleLive && presaleLive, "PRESALE_CLOSED");
         require(presalerListPurchases[msg.sender] + tokenQuantity <= FR_PER_MINT, "EXCEED_ALLOC");
         require(tokenQuantity <= FR_PER_MINT, "EXCEED_FR_PER_MINT");
