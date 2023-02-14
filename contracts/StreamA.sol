@@ -1444,7 +1444,7 @@ contract StreamA is Ownable, ERC721Royalty {
 
     mapping(address => uint256) public presalerListPurchases;
 
-    constructor() ERC721B("Stream A8", "SA8") {
+    constructor() ERC721B("Stream A9", "SA9") {
         PRESALE_LIMIT = 1000;
         FR_PRICE = 0.05 ether;
         _tokenBaseURI = "https://sp.rad.live/streampass/";

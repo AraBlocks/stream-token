@@ -53,7 +53,7 @@ Set the name and symbol:
 
 ```
 StreamA.sol:1291
-    constructor() ERC721B("Stream A8", "SA8") ...
+    constructor() ERC721B("Stream A9", "SA9") ...
 ```
 
 Deploy and verify:
