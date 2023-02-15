@@ -1,5 +1,5 @@
 // File @openzeppelin/contracts/utils/introspection/IERC165.sol@v4.3.2
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: BSD-3-Clause
 pragma solidity ^0.8.17;
 
 /**
@@ -1414,11 +1414,11 @@ abstract contract Ownable is Context {
 pragma solidity ^0.8.17;
 
 /*
-      StreamA
+      StreamPass
 * {ERC721Royalty}: A way to signal royalty information following ERC2981.
 */
 
-contract StreamA is Ownable, ERC721Royalty {
+contract StreamPass is Ownable, ERC721Royalty {
 
     using Strings for uint256;
     using ECDSA for bytes32;
@@ -1433,8 +1433,8 @@ contract StreamA is Ownable, ERC721Royalty {
     string public provenance;
     string private _contractURI;
     string private _tokenBaseURI;
-    address private _signerAddress = 0x9D582750f758b6A2dC2397669E55A19099AA18ee;
-    address private _vaultAddress = 0x8d6f7759ED866d850c15C35E665DE7e06765Ff38;
+    address private _signerAddress = 0x9cfeae92C8A5CDF5d00d91883eDc8E2db9a2FEa7;
+    address private _vaultAddress = 0x9cfeae92C8A5CDF5d00d91883eDc8E2db9a2FEa7;
 
     mapping (address => bool) public approvelist;
     mapping (address => bool) public denylist;
@@ -1444,7 +1444,7 @@ contract StreamA is Ownable, ERC721Royalty {
 
     mapping(address => uint256) public presalerListPurchases;
 
-    constructor() ERC721B("Stream A9", "SA9") {
+    constructor() ERC721B("Stream10", "S10") {
         PRESALE_LIMIT = 1000;
         FR_PRICE = 0.05 ether;
         _tokenBaseURI = "https://sp.rad.live/streampass/";

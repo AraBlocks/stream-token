@@ -6,7 +6,7 @@ task("deploy", "Deploy the contract to the blockchain").setAction(async (args, h
 
 	const signer = await ethers.getSigner();
 	const recipient = signer.address;
-	const f = await ethers.getContractFactory("StreamA");
+	const f = await ethers.getContractFactory("StreamPass");
 	const d = await f.deploy();
 
 	await d.deployed();
