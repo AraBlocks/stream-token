@@ -1444,11 +1444,19 @@ contract StreamA is Ownable, ERC721Royalty {
 
     mapping(address => uint256) public presalerListPurchases;
 
-    constructor() ERC721B("Stream A9", "SA9") {
+    function addMultipleToApproveList(address[] calldata _addresses) external onlyOwner {
+        require(_addresses.length <= 40000, "Provide less addresses in one function call");
+        for (uint256 i = 0; i < _addresses.length; i++) {
+            approvelist[_addresses[i]] = true;
+        }
+    }
+
+    constructor(address[] memory approvedCollections) ERC721B("Stream A9", "SA9") {
         PRESALE_LIMIT = 1000;
         FR_PRICE = 0.05 ether;
         _tokenBaseURI = "https://sp.rad.live/streampass/";
         setDefaultRoyalty(_vaultAddress, 3000);
+        addMultipleToApproveList(approvedCollections);
     }
 
     // ** - CORE - ** //
@@ -1519,13 +1527,6 @@ contract StreamA is Ownable, ERC721Royalty {
     
     function removeFromDenyList(address _address) external onlyOwner {
         denylist[_address] = false;
-    }
-    
-    function addMultipleToApproveList(address[] calldata _addresses) external onlyOwner {
-        require(_addresses.length <= 1000, "Provide less addresses in one function call");
-        for (uint256 i = 0; i < _addresses.length; i++) {
-            approvelist[_addresses[i]] = true;
-        }
     }
 
     function removeMultipleFromApproveList(address[] calldata _addresses) external onlyOwner {
