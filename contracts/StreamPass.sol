@@ -25,10 +25,7 @@ interface IERC165 {
     function supportsInterface(bytes4 interfaceId) external view returns (bool);
 }
 
-
 // File @openzeppelin/contracts/token/ERC721/IERC721.sol@v4.3.2
-
-
 
 pragma solidity ^0.8.17;
 
@@ -169,10 +166,7 @@ interface IERC721 is IERC165 {
     ) external;
 }
 
-
 // File @openzeppelin/contracts/token/ERC721/IERC721Receiver.sol@v4.3.2
-
-
 
 pragma solidity ^0.8.17;
 
@@ -474,10 +468,7 @@ abstract contract Context {
     }
 }
 
-
 // File @openzeppelin/contracts/utils/introspection/ERC165.sol@v4.3.2
-
-
 
 pragma solidity ^0.8.17;
 
@@ -504,20 +495,13 @@ abstract contract ERC165 is IERC165 {
     }
 }
 
-
 // File contracts/Blimpie/ERC721B.sol
-
 
 pragma solidity ^0.8.17;
 
 /********************
 * @author: Squeebo *
 ********************/
-
-
-
-
-
 
 abstract contract ERC721B is Context, ERC165, IERC721, IERC721Metadata {
     using Address for address;
@@ -550,9 +534,9 @@ abstract contract ERC721B is Context, ERC165, IERC721, IERC721Metadata {
      */
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
         return
-            interfaceId == type(IERC721).interfaceId ||
-            interfaceId == type(IERC721Metadata).interfaceId ||
-            super.supportsInterface(interfaceId);
+        interfaceId == type(IERC721).interfaceId ||
+        interfaceId == type(IERC721Metadata).interfaceId ||
+        super.supportsInterface(interfaceId);
     }
 
     /**
@@ -564,9 +548,9 @@ abstract contract ERC721B is Context, ERC165, IERC721, IERC721Metadata {
         uint count = 0;
         uint length = _owners.length;
         for( uint i = 0; i < length; ++i ){
-          if( owner == _owners[i] ){
-            ++count;
-          }
+            if( owner == _owners[i] ){
+                ++count;
+            }
         }
 
         delete length;
@@ -646,6 +630,9 @@ abstract contract ERC721B is Context, ERC165, IERC721, IERC721Metadata {
         address to,
         uint256 tokenId
     ) public virtual override {
+        require(from != address(0x0), 'invalid from address');
+        require(to != address(0x0), 'invalid to address');
+        require(tokenId > 0, 'invalid tokenId');
         //solhint-disable-next-line max-line-length
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: transfer caller is not owner nor approved");
 
@@ -897,10 +884,173 @@ abstract contract ERC721B is Context, ERC165, IERC721, IERC721Metadata {
     ) internal virtual {}
 }
 
+// File @openzeppelin/contracts/interfaces/IERC2981.sol@v4.4.1
+
+pragma solidity ^0.8.17;
+
+/**
+ * @dev Interface for the NFT Royalty Standard.
+ *
+ * A standardized way to retrieve royalty payment information for non-fungible tokens (NFTs) to enable universal
+ * support for royalty payments across all NFT marketplaces and ecosystem participants.
+ *
+ * _Available since v4.5._
+ */
+interface IERC2981 is IERC165 {
+    /**
+     * @dev Returns how much royalty is owed and to whom, based on a sale price that may be denominated in any unit of
+     * exchange. The royalty amount is denominated and should be payed in that same unit of exchange.
+     */
+    function royaltyInfo(uint256 tokenId, uint256 salePrice)
+        external
+        view
+        returns (address receiver, uint256 royaltyAmount);
+}
+
+// File @openzeppelin/contracts/token/common/ERC2981.sol@v4.4.0
+
+pragma solidity ^0.8.17;
+
+/**
+ * @dev Implementation of the NFT Royalty Standard, a standardized way to retrieve royalty payment information.
+ *
+ * Royalty information can be specified globally for all token ids via {_setDefaultRoyalty}, and/or individually for
+ * specific token ids via {_setTokenRoyalty}. The latter takes precedence over the first.
+ *
+ * Royalty is specified as a fraction of sale price. {_feeDenominator} is overridable but defaults to 10000, meaning the
+ * fee is specified in basis points by default.
+ *
+ * IMPORTANT: ERC-2981 only specifies a way to signal royalty information and does not enforce its payment. See
+ * https://eips.ethereum.org/EIPS/eip-2981#optional-royalty-payments[Rationale] in the EIP. Marketplaces are expected to
+ * voluntarily pay royalties together with sales, but note that this standard is not yet widely supported.
+ *
+ * _Available since v4.5._
+ */
+abstract contract ERC2981 is IERC2981, ERC165 {
+    struct RoyaltyInfo {
+        address receiver;
+        uint96 royaltyFraction;
+    }
+
+    RoyaltyInfo private _defaultRoyaltyInfo;
+    mapping(uint256 => RoyaltyInfo) private _tokenRoyaltyInfo;
+
+    /**
+     * @dev See {IERC165-supportsInterface}.
+     */
+    function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, ERC165) returns (bool) {
+        return interfaceId == type(IERC2981).interfaceId || super.supportsInterface(interfaceId);
+    }
+
+    /**
+     * @inheritdoc IERC2981
+     */
+    function royaltyInfo(uint256 _tokenId, uint256 _salePrice) external view override returns (address, uint256) {
+        RoyaltyInfo memory royalty = _tokenRoyaltyInfo[_tokenId];
+
+        if (royalty.receiver == address(0)) {
+            royalty = _defaultRoyaltyInfo;
+        }
+
+        uint256 royaltyAmount = (_salePrice * royalty.royaltyFraction) / _feeDenominator();
+
+        return (royalty.receiver, royaltyAmount);
+    }
+
+    /**
+     * @dev The denominator with which to interpret the fee set in {_setTokenRoyalty} and {_setDefaultRoyalty} as a
+     * fraction of the sale price. Defaults to 10000 so fees are expressed in basis points, but may be customized by an
+     * override.
+     */
+    function _feeDenominator() internal pure virtual returns (uint96) {
+        return 10000;
+    }
+
+    /**
+     * @dev Sets the royalty information that all ids in this contract will default to.
+     *
+     * Requirements:
+     *
+     * - `receiver` cannot be the zero address.
+     * - `feeNumerator` cannot be greater than the fee denominator.
+     */
+    function _setDefaultRoyalty(address receiver, uint96 feeNumerator) internal virtual {
+        require(feeNumerator <= _feeDenominator(), "ERC2981: royalty fee will exceed salePrice");
+        require(receiver != address(0), "ERC2981: invalid receiver");
+
+        _defaultRoyaltyInfo = RoyaltyInfo(receiver, feeNumerator);
+    }
+
+    /**
+     * @dev Removes default royalty information.
+     */
+    function _deleteDefaultRoyalty() internal virtual {
+        delete _defaultRoyaltyInfo;
+    }
+
+    /**
+     * @dev Sets the royalty information for a specific token id, overriding the global default.
+     *
+     * Requirements:
+     *
+     * - `tokenId` must be already minted.
+     * - `receiver` cannot be the zero address.
+     * - `feeNumerator` cannot be greater than the fee denominator.
+     */
+    function _setTokenRoyalty(
+        uint256 tokenId,
+        address receiver,
+        uint96 feeNumerator
+    ) internal virtual {
+        require(feeNumerator <= _feeDenominator(), "ERC2981: royalty fee will exceed salePrice");
+        require(receiver != address(0), "ERC2981: Invalid parameters");
+
+        _tokenRoyaltyInfo[tokenId] = RoyaltyInfo(receiver, feeNumerator);
+    }
+
+    /**
+     * @dev Resets royalty information for the token id back to the global default.
+     */
+    function _resetTokenRoyalty(uint256 tokenId) internal virtual {
+        delete _tokenRoyaltyInfo[tokenId];
+    }
+}
+
+// File @openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol@v4.4.0
+
+pragma solidity ^0.8.17;
+
+/**
+ * @dev Extension of ERC721 with the ERC2981 NFT Royalty Standard, a standardized way to retrieve royalty payment
+ * information.
+ *
+ * Royalty information can be specified globally for all token ids via {_setDefaultRoyalty}, and/or individually for
+ * specific token ids via {_setTokenRoyalty}. The latter takes precedence over the first.
+ *
+ * IMPORTANT: ERC-2981 only specifies a way to signal royalty information and does not enforce its payment. See
+ * https://eips.ethereum.org/EIPS/eip-2981#optional-royalty-payments[Rationale] in the EIP. Marketplaces are expected to
+ * voluntarily pay royalties together with sales, but note that this standard is not yet widely supported.
+ *
+ * _Available since v4.5._
+ */
+abstract contract ERC721Royalty is ERC2981, ERC721B {
+    /**
+     * @dev See {IERC165-supportsInterface}.
+     */
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721B, ERC2981) returns (bool) {
+        return super.supportsInterface(interfaceId);
+    }
+
+    /**
+     * @dev See {ERC721-_burn}. This override additionally clears the royalty information for the token.
+     */
+    function _burn(uint256 tokenId) internal virtual override {
+        super._burn(tokenId);
+        _resetTokenRoyalty(tokenId);
+    }
+}
 
 // File @openzeppelin/contracts/utils/cryptography/ECDSA.sol@v4.3.2
-
-
 
 pragma solidity ^0.8.17;
 
@@ -1194,7 +1344,6 @@ library Strings {
 // File @openzeppelin/contracts/access/Ownable.sol@v4.3.2
 
 
-
 pragma solidity ^0.8.17;
 
 /**
@@ -1264,85 +1413,193 @@ abstract contract Ownable is Context {
 }
 
 
-// File contracts/agc.sol
-
-
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 /*
-       .-""""-.        .-""""-.
-      /        \      /        \
-     /_        _\    /_        _\
-    // \      / \\  // \      / \\
-    |\__\    /__/|  |\__\    /__/|
-     \    ||    /    \    ||    /
-      \        /      \        /
-       \  __  /        \  __  / 
-        '.__.'          '.__.'
-         |  |            |  |
-         |  |            |  |
-                                       
-      Forked from Alpha Girl Club - @InvaderETH
+      StreamA
+* {ERC721Royalty}: A way to signal royalty information following ERC2981.
 */
 
-contract StreamPass is  Ownable, ERC721B {
+contract StreamA is Ownable, ERC721Royalty {
 
     using Strings for uint256;
     using ECDSA for bytes32;
 
-    uint256 public constant AGC_PUBLIC = 9500;
-    uint256 public constant AGC_MAX = 10000;
-    uint256 public constant AGC_GIFT = 500;
-    uint256 public constant AGC_PRICE = 0.05 ether;
-    uint256 public constant AGC_PER_MINT = 50;
+    uint256 public constant FR_PUBLIC = 9900;
+    uint256 public constant FR_GIFT = 100;
+    uint256 public constant FR_PER_MINT = 100;
     uint256 public giftedAmount;
+    uint256 public FR_PRICE;
+    uint256 public PRESALE_LIMIT;
 
     string public provenance;
     string private _contractURI;
     string private _tokenBaseURI;
-    address private _signerAddress = 0x9cfeae92C8A5CDF5d00d91883eDc8E2db9a2FEa7;
-    address private _vaultAddress = 0x9cfeae92C8A5CDF5d00d91883eDc8E2db9a2FEa7;
+    address private _signerAddress = 0x9D582750f758b6A2dC2397669E55A19099AA18ee;
+    address private _vaultAddress = 0xC049AF472eEC8ce544765974C7AE88Cf2b133393;
+    
+    //address private approvelistSigner = 0xC049AF472eEC8ce544765974C7AE88Cf2b133393;
+    address[] internal approvecollections;
+    mapping (address => bool) public approvelist;
+    mapping (address => bool) public denylist;
 
     bool public presaleLive;
     bool public saleLive;
 
     mapping(address => uint256) public presalerListPurchases;
-    
-    constructor() ERC721B("Stream11", "S11") { }
-    
+
+    constructor() ERC721B("Stream12", "S12") {
+        PRESALE_LIMIT = 1000;
+        FR_PRICE = 0.05 ether;
+        _tokenBaseURI = "https://sp.rad.live/streampass/";
+    }
+
     // ** - CORE - ** //
 
-    function buy(bytes32 hash, bytes memory signature, uint256 tokenQuantity) external payable {
+    function buy(uint256 tokenQuantity) external payable {
         require(saleLive, "SALE_CLOSED");
         require(!presaleLive, "ONLY_PRESALE");
-        require(matchAddressSigner(hash, signature), "DIRECT_MINT_DISALLOWED");
-        require(tokenQuantity <= AGC_PER_MINT, "EXCEED_AGC_PER_MINT");
-        require(AGC_PRICE * tokenQuantity <= msg.value, "INSUFFICIENT_ETH");
+        require(tokenQuantity <= FR_PER_MINT, "EXCEED_FR_PER_MINT");
+        require(FR_PRICE * tokenQuantity <= msg.value, "INSUFFICIENT_ETH");
+        require(!denylist[msg.sender], "NOT_APPROVED_BUYER");
 
         uint256 supply = _owners.length;
-        require(supply + tokenQuantity <= AGC_PUBLIC, "EXCEED_MAX_SALE_SUPPLY");
+        require(supply + tokenQuantity <= FR_PUBLIC, "EXCEED_MAX_SALE_SUPPLY");
         for(uint256 i = 0; i < tokenQuantity; i++) {
-           _mint( msg.sender, supply++);
-        }
-    } 
-
-    function presaleBuy(bytes32 hash, bytes memory signature, uint256 tokenQuantity) external payable {
-        require(!saleLive && presaleLive, "PRESALE_CLOSED");
-        require(matchAddressSigner(hash, signature), "DIRECT_MINT_DISALLOWED");
-        require(presalerListPurchases[msg.sender] + tokenQuantity <= AGC_PER_MINT, "EXCEED_ALLOC");
-        require(tokenQuantity <= AGC_PER_MINT, "EXCEED_AGC_PER_MINT");
-        require(AGC_PRICE * tokenQuantity <= msg.value, "INSUFFICIENT_ETH");
-
-        uint256 supply = _owners.length;
-        require(supply + tokenQuantity <= AGC_PUBLIC, "EXCEED_MAX_SALE_SUPPLY");
-
-        presalerListPurchases[msg.sender] += tokenQuantity;
-        for (uint256 i = 0; i < tokenQuantity; i++) {
             _mint( msg.sender, supply++);
         }
-    } 
+    }
+    
+    function setTokenRoyalty(
+        uint256 tokenId,
+        address recipient,
+        uint96 fraction
+    ) public {
+        _setTokenRoyalty(tokenId, recipient, fraction);
+    }
+
+    function setDefaultRoyalty(address recipient, uint96 fraction) public {
+        _setDefaultRoyalty(recipient, fraction);
+    }
+    function deleteDefaultRoyalty() public {
+        _deleteDefaultRoyalty();
+    }
+    
+    /*
+    function canMint(address _address) public view returns (bool, string memory) {
+        if (!approvelist[_address]) {
+            return (false, "Invalid signature");
+        }
+        return (true, "");
+    }
+    */
+
+    function presaleBuy(uint256 tokenQuantity) external payable {
+        require(!saleLive && presaleLive, "PRESALE_CLOSED");
+        require(presalerListPurchases[msg.sender] + tokenQuantity <= FR_PER_MINT, "EXCEED_ALLOC");
+        require(tokenQuantity <= FR_PER_MINT, "EXCEED_FR_PER_MINT");
+        require(FR_PRICE * tokenQuantity <= msg.value, "INSUFFICIENT_ETH");
+        /*require(approvelist[msg.sender] || walletHoldsToken(msg.sender), "NOT_APPROVED_BUYER");*/
+        require(!denylist[msg.sender], "NOT_APPROVED_BUYER");
+
+        uint256 supply = _owners.length;
+        require(supply + tokenQuantity <= PRESALE_LIMIT, "EXCEED_MAX_PRESALE_SUPPLY");
+        presalerListPurchases[msg.sender] += tokenQuantity;
+        for (uint256 i = 0; i < tokenQuantity; i++) {
+            _mint(msg.sender, supply++);
+        }
+
+        if (supply == PRESALE_LIMIT) {
+            presaleLive = false;
+            saleLive = true;
+            FR_PRICE = 0.15 ether;
+        }
+    }
 
     // ** - ADMIN - ** //
+
+    function indexOf(address[] memory arr, address searchFor) private pure returns (int256) {
+        for (uint256 i = 0; i < arr.length; i++) {
+            if (arr[i] == searchFor) {
+            return int256(i);
+            }
+        }
+        return -1; // not found
+    }
+    // function addToApproveList(address _newAddress) external onlyOwner {
+    //     approvelist[_newAddress] = true;
+    // }
+    
+    // function removeFromApproveList(address _address) external onlyOwner {
+    //     approvelist[_address] = false;
+    // }
+    
+    // function addToApproveCollections(address _newAddress) public onlyOwner {
+    //     int256 index = indexOf(approvecollections, _newAddress);
+    //     require(index == -1, "Collection is already Approved");
+    //     approvecollections.push(_newAddress);
+    // }
+    
+    // function removeFromApproveCollections(address _address) public onlyOwner {
+    //     int256 index = indexOf(approvecollections, _address);
+    //     require(index > -1, "Collection Address not available");
+
+    //     uint256 length = approvecollections.length - 1;
+    //     for (uint256 i = uint256(index); i < length; i++) {
+    //         uint256 curr = i + 1;
+    //         approvecollections[i] = approvecollections[curr];
+    //     }
+    //     approvecollections.pop(); // delete the last item
+    // }
+    
+    // function walletHoldsToken(address _wallet) public view returns (bool) {
+    //     uint256 contractLength = approvecollections.length;
+    //     bool results = false;
+    //     while (!results) {
+    //         for (uint256 i = 0; i < contractLength; i++) {
+    //             address contractaddress = approvecollections[i];
+    //             results = IERC721(contractaddress).balanceOf(_wallet) > 0;
+    //         }
+    //     }
+
+    //     return results;
+    // }
+
+    function addToDenyList(address _newAddress) external onlyOwner {
+        denylist[_newAddress] = true;
+    }
+    
+    function removeFromDenyList(address _address) external onlyOwner {
+        denylist[_address] = false;
+    }
+
+    // function addMultipleToApproveCollections(address[] calldata _addresses) external onlyOwner {
+    //     require(_addresses.length <= 10000, "Provide less addresses in one function call");
+    //     for (uint256 i = 0; i < _addresses.length; i++) {
+    //         addToApproveCollections(_addresses[i]);
+    //     }
+    // }
+
+    // function removeMultipleFromApproveCollections(address[] calldata _addresses) external onlyOwner {
+    //     require(_addresses.length <= 10000, "Provide less addresses in one function call");
+    //     for (uint256 i = 0; i < _addresses.length; i++) {
+    //         removeFromApproveCollections(_addresses[i]);
+    //     }
+    // }
+    
+    function addMultipleToApproveList(address[] calldata _addresses) external onlyOwner {
+        require(_addresses.length <= 10000, "Provide less addresses in one function call");
+        for (uint256 i = 0; i < _addresses.length; i++) {
+            approvelist[_addresses[i]] = true;
+        }
+    }
+
+    function removeMultipleFromApproveList(address[] calldata _addresses) external onlyOwner {
+        require(_addresses.length <= 10000, "Provide less addresses in one function call");
+        for (uint256 i = 0; i < _addresses.length; i++) {
+            approvelist[_addresses[i]] = false;
+        }
+    }
 
     function withdraw() external onlyOwner {
         payable(_vaultAddress).transfer(address(this).balance);
@@ -1351,23 +1608,27 @@ contract StreamPass is  Ownable, ERC721B {
     function gift(address[] calldata receivers) external onlyOwner {
         uint256 supply = _owners.length;
 
-        require(supply + receivers.length <= AGC_MAX, "MAX_MINT");
-        require(giftedAmount + receivers.length <= AGC_GIFT, "NO_GIFTS");
-        
+        require(supply + receivers.length <= FR_PUBLIC, "MAX_MINT");
+        require(giftedAmount + receivers.length <= FR_GIFT, "NO_GIFTS");
+
         for (uint256 i = 0; i < receivers.length; i++) {
             giftedAmount++;
             _safeMint(receivers[i], supply++ );
         }
     }
 
-    function togglePresaleStatus() external onlyOwner {
+    function togglePresaleStatus() public onlyOwner {
         presaleLive = !presaleLive;
-    } 
-
-    function toggleSaleStatus() external onlyOwner {
-        saleLive = !saleLive;
     }
 
+    function toggleSaleStatus() public onlyOwner {
+        saleLive = !saleLive;
+        if (saleLive) {
+            FR_PRICE = 0.15 ether;
+        } else {
+            FR_PRICE = 0.05 ether;
+        }
+    }
     // ** - SETTERS - ** //
 
     function setSignerAddress(address addr) external onlyOwner {
@@ -1380,32 +1641,48 @@ contract StreamPass is  Ownable, ERC721B {
 
     function setContractURI(string calldata URI) external onlyOwner {
         _contractURI = URI;
-    } 
+    }
 
     function setBaseURI(string calldata URI) external onlyOwner {
         _tokenBaseURI = URI;
     }
 
+    function setPrice(uint256 amount) external onlyOwner {
+        FR_PRICE = amount;
+    }
+
+    function setPreSaleLimit(uint256 amount) external onlyOwner {
+        PRESALE_LIMIT = amount;
+    }
+
     // ** - MISC - ** //
-    
+
     function setProvenanceHash(string calldata hash) external onlyOwner {
         provenance = hash;
-    } 
+    }
 
     function contractURI() public view returns (string memory) {
         return _contractURI;
-    } 
+    }
 
     function tokenURI(uint256 tokenId) external view virtual override returns (string memory) {
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
         return string(abi.encodePacked(_tokenBaseURI, tokenId.toString()));
-    } 
+    }
 
     function presalePurchasedCount(address addr) external view returns (uint256) {
         return presalerListPurchases[addr];
-    } 
-    
-    function matchAddressSigner(bytes32 hash, bytes memory signature) private view returns(bool) {
-        return _signerAddress == hash.recover(signature);
     }
+
+    function availableToMint() external view returns (uint256) {
+        return FR_PUBLIC - _owners.length;
+    }
+
+    function totalSupply() external view returns (uint256) {
+        return _owners.length;
+    }
+
+    // function approvedCollections() external view returns (address[] memory) {
+    //     return approvecollections;
+    // }
 }

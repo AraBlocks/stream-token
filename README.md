@@ -67,8 +67,8 @@ Delete for a fresh start:
 Set the name and symbol:
 
 ```
-StreamPass.sol:1311
-    constructor() ERC721B("Stream11", "S11") { }
+StreamPass.sol
+    constructor() ERC721B("Stream12", "S12") ...
 ```
 
 Deploy and verify:
