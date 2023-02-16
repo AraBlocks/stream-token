@@ -44,6 +44,11 @@ Contract `Stream10`, made on
 and
 [mainnet](https://etherscan.io/tx/0x6c1c98b4ef9a351d9e367144c7733afb00d141920dfdea753c769a93f657560b).
 
+Contract `Stream11`, minimal fork from AGC, made on
+[goerli](https://goerli.etherscan.io/tx/0x610c29e4348481a550c17e7a2ef2b002b2f8574fbc1ee0914fa6f5a4a19d84cf)
+and
+[mainnet](https://etherscan.io/tx/0x0e61c17579d18cd9f8dbfe9324993d6740052e1020d81f0afa92698bc450039c).
+
 Copy and fill out:
 
 ```
