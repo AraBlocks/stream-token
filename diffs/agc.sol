@@ -2,7 +2,7 @@
 
 // SPDX-License-Identifier: BSD-3-Clause
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.0;
 
 /**
  * @dev Interface of the ERC165 standard, as defined in the
@@ -30,7 +30,7 @@ interface IERC165 {
 
 
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.0;
 
 /**
  * @dev Required interface of an ERC721 compliant contract.
@@ -174,7 +174,7 @@ interface IERC721 is IERC165 {
 
 
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.0;
 
 /**
  * @title ERC721 token receiver interface
@@ -204,7 +204,7 @@ interface IERC721Receiver {
 
 
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.0;
 
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional metadata extension
@@ -232,7 +232,7 @@ interface IERC721Metadata is IERC721 {
 
 
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.0;
 
 /**
  * @dev Collection of functions related to the address type
@@ -452,7 +452,7 @@ library Address {
 
 
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.0;
 
 /**
  * @dev Provides information about the current execution context, including the
@@ -479,7 +479,7 @@ abstract contract Context {
 
 
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.0;
 
 /**
  * @dev Implementation of the {IERC165} interface.
@@ -508,7 +508,7 @@ abstract contract ERC165 is IERC165 {
 // File contracts/Blimpie/ERC721B.sol
 
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.0;
 
 /********************
 * @author: Squeebo *
@@ -902,7 +902,7 @@ abstract contract ERC721B is Context, ERC165, IERC721, IERC721Metadata {
 
 
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.0;
 
 /**
  * @dev Elliptic Curve Digital Signature Algorithm (ECDSA) operations.
@@ -1125,7 +1125,7 @@ library ECDSA {
 
 
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.0;
 
 /**
  * @dev String operations.
@@ -1195,7 +1195,7 @@ library Strings {
 
 
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.0;
 
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -1282,10 +1282,10 @@ pragma solidity ^0.8.9;
          |  |            |  |
          |  |            |  |
                                        
-      Forked from Alpha Girl Club - @InvaderETH
+      Alpha Girl Club - @InvaderETH
 */
 
-contract StreamPass is  Ownable, ERC721B {
+contract AlphaGirlClub is  Ownable, ERC721B {
 
     using Strings for uint256;
     using ECDSA for bytes32;
@@ -1293,22 +1293,22 @@ contract StreamPass is  Ownable, ERC721B {
     uint256 public constant AGC_PUBLIC = 9500;
     uint256 public constant AGC_MAX = 10000;
     uint256 public constant AGC_GIFT = 500;
-    uint256 public constant AGC_PRICE = 0.05 ether;
-    uint256 public constant AGC_PER_MINT = 50;
+    uint256 public constant AGC_PRICE = 0.08 ether;
+    uint256 public constant AGC_PER_MINT = 4;
     uint256 public giftedAmount;
 
     string public provenance;
     string private _contractURI;
     string private _tokenBaseURI;
-    address private _signerAddress = 0x9cfeae92C8A5CDF5d00d91883eDc8E2db9a2FEa7;
-    address private _vaultAddress = 0x9cfeae92C8A5CDF5d00d91883eDc8E2db9a2FEa7;
+    address private _signerAddress = 0x079f1BaC0025ad71Ab16253271ceCA92b222C614;
+    address private _vaultAddress = 0x6614748B04507b4D4C7182E07e759292C2758e2A;
 
     bool public presaleLive;
     bool public saleLive;
 
     mapping(address => uint256) public presalerListPurchases;
     
-    constructor() ERC721B("Stream11", "S11") { }
+    constructor() ERC721B("Alpha Girl Club", "AGC") { }
     
     // ** - CORE - ** //
 

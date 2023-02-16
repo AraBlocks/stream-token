@@ -1,0 +1,68 @@
+5c5
+< pragma solidity ^0.8.0;
+---
+> pragma solidity ^0.8.17;
+33c33
+< pragma solidity ^0.8.0;
+---
+> pragma solidity ^0.8.17;
+177c177
+< pragma solidity ^0.8.0;
+---
+> pragma solidity ^0.8.17;
+207c207
+< pragma solidity ^0.8.0;
+---
+> pragma solidity ^0.8.17;
+235c235
+< pragma solidity ^0.8.0;
+---
+> pragma solidity ^0.8.17;
+455c455
+< pragma solidity ^0.8.0;
+---
+> pragma solidity ^0.8.17;
+482c482
+< pragma solidity ^0.8.0;
+---
+> pragma solidity ^0.8.17;
+511c511
+< pragma solidity ^0.8.0;
+---
+> pragma solidity ^0.8.17;
+905c905
+< pragma solidity ^0.8.0;
+---
+> pragma solidity ^0.8.17;
+1128c1128
+< pragma solidity ^0.8.0;
+---
+> pragma solidity ^0.8.17;
+1198c1198
+< pragma solidity ^0.8.0;
+---
+> pragma solidity ^0.8.17;
+1285c1285
+<       Alpha Girl Club - @InvaderETH
+---
+>       Forked from Alpha Girl Club - @InvaderETH
+1288c1288
+< contract AlphaGirlClub is  Ownable, ERC721B {
+---
+> contract StreamPass is  Ownable, ERC721B {
+1296,1297c1296,1297
+<     uint256 public constant AGC_PRICE = 0.08 ether;
+<     uint256 public constant AGC_PER_MINT = 4;
+---
+>     uint256 public constant AGC_PRICE = 0.05 ether;
+>     uint256 public constant AGC_PER_MINT = 50;
+1303,1304c1303,1304
+<     address private _signerAddress = 0x079f1BaC0025ad71Ab16253271ceCA92b222C614;
+<     address private _vaultAddress = 0x6614748B04507b4D4C7182E07e759292C2758e2A;
+---
+>     address private _signerAddress = 0x9cfeae92C8A5CDF5d00d91883eDc8E2db9a2FEa7;
+>     address private _vaultAddress = 0x9cfeae92C8A5CDF5d00d91883eDc8E2db9a2FEa7;
+1311c1311
+<     constructor() ERC721B("Alpha Girl Club", "AGC") { }
+---
+>     constructor() ERC721B("Stream11", "S11") { }
