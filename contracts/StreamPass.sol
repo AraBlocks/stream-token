@@ -1416,11 +1416,11 @@ abstract contract Ownable is Context {
 pragma solidity ^0.8.17;
 
 /*
-      StreamA
+      StreamPass
 * {ERC721Royalty}: A way to signal royalty information following ERC2981.
 */
 
-contract StreamA is Ownable, ERC721Royalty {
+contract StreamPass is Ownable, ERC721Royalty {
 
     using Strings for uint256;
     using ECDSA for bytes32;
