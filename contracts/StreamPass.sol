@@ -1444,7 +1444,7 @@ contract StreamPass is Ownable, ERC721Royalty {
 
     mapping(address => uint256) public presalerListPurchases;
 
-    constructor() ERC721B("Stream13", "S13") {
+    constructor() ERC721B("Stream Pass", "NFTV") {
         PRESALE_LIMIT = 1000;
         FR_PRICE = 0.05 ether;
         _tokenBaseURI = "https://sp.rad.live/streampass/";
