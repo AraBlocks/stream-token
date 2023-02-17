@@ -1,5 +1,7 @@
 // File @openzeppelin/contracts/utils/introspection/IERC165.sol@v4.3.2
+
 // SPDX-License-Identifier: BSD-3-Clause
+
 pragma solidity ^0.8.17;
 
 /**
@@ -1433,9 +1435,11 @@ contract StreamPass is Ownable, ERC721Royalty {
     string public provenance;
     string private _contractURI;
     string private _tokenBaseURI;
-    address private _signerAddress = 0x9cfeae92C8A5CDF5d00d91883eDc8E2db9a2FEa7;
-    address private _vaultAddress = 0x9cfeae92C8A5CDF5d00d91883eDc8E2db9a2FEa7;
-
+    address private _signerAddress = 0x9D582750f758b6A2dC2397669E55A19099AA18ee;
+    address private _vaultAddress = 0xC049AF472eEC8ce544765974C7AE88Cf2b133393;
+    
+    //address private approvelistSigner = 0xC049AF472eEC8ce544765974C7AE88Cf2b133393;
+    address[] internal approvecollections;
     mapping (address => bool) public approvelist;
     mapping (address => bool) public denylist;
 
@@ -1444,11 +1448,10 @@ contract StreamPass is Ownable, ERC721Royalty {
 
     mapping(address => uint256) public presalerListPurchases;
 
-    constructor() ERC721B("Stream13", "S13") {
+    constructor() ERC721B("Stream12", "S12") {
         PRESALE_LIMIT = 1000;
         FR_PRICE = 0.05 ether;
         _tokenBaseURI = "https://sp.rad.live/streampass/";
-        setDefaultRoyalty(_vaultAddress, 3000);
     }
 
     // ** - CORE - ** //
@@ -1482,11 +1485,21 @@ contract StreamPass is Ownable, ERC721Royalty {
         _deleteDefaultRoyalty();
     }
     
+    /*
+    function canMint(address _address) public view returns (bool, string memory) {
+        if (!approvelist[_address]) {
+            return (false, "Invalid signature");
+        }
+        return (true, "");
+    }
+    */
+
     function presaleBuy(uint256 tokenQuantity) external payable {
         require(!saleLive && presaleLive, "PRESALE_CLOSED");
         require(presalerListPurchases[msg.sender] + tokenQuantity <= FR_PER_MINT, "EXCEED_ALLOC");
         require(tokenQuantity <= FR_PER_MINT, "EXCEED_FR_PER_MINT");
         require(FR_PRICE * tokenQuantity <= msg.value, "INSUFFICIENT_ETH");
+        /*require(approvelist[msg.sender] || walletHoldsToken(msg.sender), "NOT_APPROVED_BUYER");*/
         require(!denylist[msg.sender], "NOT_APPROVED_BUYER");
 
         uint256 supply = _owners.length;
@@ -1504,6 +1517,54 @@ contract StreamPass is Ownable, ERC721Royalty {
     }
 
     // ** - ADMIN - ** //
+
+    function indexOf(address[] memory arr, address searchFor) private pure returns (int256) {
+        for (uint256 i = 0; i < arr.length; i++) {
+            if (arr[i] == searchFor) {
+            return int256(i);
+            }
+        }
+        return -1; // not found
+    }
+    // function addToApproveList(address _newAddress) external onlyOwner {
+    //     approvelist[_newAddress] = true;
+    // }
+    
+    // function removeFromApproveList(address _address) external onlyOwner {
+    //     approvelist[_address] = false;
+    // }
+    
+    // function addToApproveCollections(address _newAddress) public onlyOwner {
+    //     int256 index = indexOf(approvecollections, _newAddress);
+    //     require(index == -1, "Collection is already Approved");
+    //     approvecollections.push(_newAddress);
+    // }
+    
+    // function removeFromApproveCollections(address _address) public onlyOwner {
+    //     int256 index = indexOf(approvecollections, _address);
+    //     require(index > -1, "Collection Address not available");
+
+    //     uint256 length = approvecollections.length - 1;
+    //     for (uint256 i = uint256(index); i < length; i++) {
+    //         uint256 curr = i + 1;
+    //         approvecollections[i] = approvecollections[curr];
+    //     }
+    //     approvecollections.pop(); // delete the last item
+    // }
+    
+    // function walletHoldsToken(address _wallet) public view returns (bool) {
+    //     uint256 contractLength = approvecollections.length;
+    //     bool results = false;
+    //     while (!results) {
+    //         for (uint256 i = 0; i < contractLength; i++) {
+    //             address contractaddress = approvecollections[i];
+    //             results = IERC721(contractaddress).balanceOf(_wallet) > 0;
+    //         }
+    //     }
+
+    //     return results;
+    // }
+
     function addToDenyList(address _newAddress) external onlyOwner {
         denylist[_newAddress] = true;
     }
@@ -1511,9 +1572,23 @@ contract StreamPass is Ownable, ERC721Royalty {
     function removeFromDenyList(address _address) external onlyOwner {
         denylist[_address] = false;
     }
+
+    // function addMultipleToApproveCollections(address[] calldata _addresses) external onlyOwner {
+    //     require(_addresses.length <= 10000, "Provide less addresses in one function call");
+    //     for (uint256 i = 0; i < _addresses.length; i++) {
+    //         addToApproveCollections(_addresses[i]);
+    //     }
+    // }
+
+    // function removeMultipleFromApproveCollections(address[] calldata _addresses) external onlyOwner {
+    //     require(_addresses.length <= 10000, "Provide less addresses in one function call");
+    //     for (uint256 i = 0; i < _addresses.length; i++) {
+    //         removeFromApproveCollections(_addresses[i]);
+    //     }
+    // }
     
     function addMultipleToApproveList(address[] calldata _addresses) external onlyOwner {
-        require(_addresses.length <= 1000, "Provide less addresses in one function call");
+        require(_addresses.length <= 10000, "Provide less addresses in one function call");
         for (uint256 i = 0; i < _addresses.length; i++) {
             approvelist[_addresses[i]] = true;
         }
@@ -1606,4 +1681,8 @@ contract StreamPass is Ownable, ERC721Royalty {
     function totalSupply() external view returns (uint256) {
         return _owners.length;
     }
+
+    // function approvedCollections() external view returns (address[] memory) {
+    //     return approvecollections;
+    // }
 }

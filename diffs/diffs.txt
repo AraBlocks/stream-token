@@ -1,0 +1,13 @@
+
+alpha.sol - https://etherscan.io/address/0x8c5029957bf42c61d19a29075dc4e00b626e5022
+stream09.sol - earlier starting point
+stream10.sol - release candidate feb16 morning
+stream11.sol - minimal alpha fork
+stream12.sol - @Prash74's quick fix
+stream13.sol - release candidate feb16 night
+
+alpha-stream09.diff - outdated full bracket diff
+alpha-stream11.diff - demonstration of minimal fork
+stream09-stream12.diff - investigating the fix
+stream10-stream12.diff - investigating the fix
+stream10-stream13.diff - implementing the fix

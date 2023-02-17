@@ -1444,7 +1444,7 @@ contract StreamPass is Ownable, ERC721Royalty {
 
     mapping(address => uint256) public presalerListPurchases;
 
-    constructor() ERC721B("Stream13", "S13") {
+    constructor() ERC721B("Stream10", "S10") {
         PRESALE_LIMIT = 1000;
         FR_PRICE = 0.05 ether;
         _tokenBaseURI = "https://sp.rad.live/streampass/";
@@ -1482,11 +1482,20 @@ contract StreamPass is Ownable, ERC721Royalty {
         _deleteDefaultRoyalty();
     }
     
+    
+    function canMint(address _address) public view returns (bool, string memory) {
+        if (!approvelist[_address]) {
+            return (false, "Invalid signature");
+        }
+        return (true, "");
+    }
+
     function presaleBuy(uint256 tokenQuantity) external payable {
         require(!saleLive && presaleLive, "PRESALE_CLOSED");
         require(presalerListPurchases[msg.sender] + tokenQuantity <= FR_PER_MINT, "EXCEED_ALLOC");
         require(tokenQuantity <= FR_PER_MINT, "EXCEED_FR_PER_MINT");
         require(FR_PRICE * tokenQuantity <= msg.value, "INSUFFICIENT_ETH");
+        require(approvelist[msg.sender], "NOT_APPROVED_BUYER");
         require(!denylist[msg.sender], "NOT_APPROVED_BUYER");
 
         uint256 supply = _owners.length;

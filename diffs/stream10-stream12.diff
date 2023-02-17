@@ -1,0 +1,107 @@
+1a2
+> 
+2a4
+> 
+1436,1438c1438,1442
+<     address private _signerAddress = 0x9cfeae92C8A5CDF5d00d91883eDc8E2db9a2FEa7;
+<     address private _vaultAddress = 0x9cfeae92C8A5CDF5d00d91883eDc8E2db9a2FEa7;
+< 
+---
+>     address private _signerAddress = 0x9D582750f758b6A2dC2397669E55A19099AA18ee;
+>     address private _vaultAddress = 0xC049AF472eEC8ce544765974C7AE88Cf2b133393;
+>     
+>     //address private approvelistSigner = 0xC049AF472eEC8ce544765974C7AE88Cf2b133393;
+>     address[] internal approvecollections;
+1447c1451
+<     constructor() ERC721B("Stream10", "S10") {
+---
+>     constructor() ERC721B("Stream12", "S12") {
+1451d1454
+<         setDefaultRoyalty(_vaultAddress, 3000);
+1485c1488
+<     
+---
+>     /*
+1491a1495
+>     */
+1498c1502
+<         require(approvelist[msg.sender], "NOT_APPROVED_BUYER");
+---
+>         /*require(approvelist[msg.sender] || walletHoldsToken(msg.sender), "NOT_APPROVED_BUYER");*/
+1515a1520,1567
+> 
+>     function indexOf(address[] memory arr, address searchFor) private pure returns (int256) {
+>         for (uint256 i = 0; i < arr.length; i++) {
+>             if (arr[i] == searchFor) {
+>             return int256(i);
+>             }
+>         }
+>         return -1; // not found
+>     }
+>     // function addToApproveList(address _newAddress) external onlyOwner {
+>     //     approvelist[_newAddress] = true;
+>     // }
+>     
+>     // function removeFromApproveList(address _address) external onlyOwner {
+>     //     approvelist[_address] = false;
+>     // }
+>     
+>     // function addToApproveCollections(address _newAddress) public onlyOwner {
+>     //     int256 index = indexOf(approvecollections, _newAddress);
+>     //     require(index == -1, "Collection is already Approved");
+>     //     approvecollections.push(_newAddress);
+>     // }
+>     
+>     // function removeFromApproveCollections(address _address) public onlyOwner {
+>     //     int256 index = indexOf(approvecollections, _address);
+>     //     require(index > -1, "Collection Address not available");
+> 
+>     //     uint256 length = approvecollections.length - 1;
+>     //     for (uint256 i = uint256(index); i < length; i++) {
+>     //         uint256 curr = i + 1;
+>     //         approvecollections[i] = approvecollections[curr];
+>     //     }
+>     //     approvecollections.pop(); // delete the last item
+>     // }
+>     
+>     // function walletHoldsToken(address _wallet) public view returns (bool) {
+>     //     uint256 contractLength = approvecollections.length;
+>     //     bool results = false;
+>     //     while (!results) {
+>     //         for (uint256 i = 0; i < contractLength; i++) {
+>     //             address contractaddress = approvecollections[i];
+>     //             results = IERC721(contractaddress).balanceOf(_wallet) > 0;
+>     //         }
+>     //     }
+> 
+>     //     return results;
+>     // }
+> 
+1522a1575,1588
+> 
+>     // function addMultipleToApproveCollections(address[] calldata _addresses) external onlyOwner {
+>     //     require(_addresses.length <= 10000, "Provide less addresses in one function call");
+>     //     for (uint256 i = 0; i < _addresses.length; i++) {
+>     //         addToApproveCollections(_addresses[i]);
+>     //     }
+>     // }
+> 
+>     // function removeMultipleFromApproveCollections(address[] calldata _addresses) external onlyOwner {
+>     //     require(_addresses.length <= 10000, "Provide less addresses in one function call");
+>     //     for (uint256 i = 0; i < _addresses.length; i++) {
+>     //         removeFromApproveCollections(_addresses[i]);
+>     //     }
+>     // }
+1525c1591
+<         require(_addresses.length <= 1000, "Provide less addresses in one function call");
+---
+>         require(_addresses.length <= 10000, "Provide less addresses in one function call");
+1618c1684,1688
+< }
+\ No newline at end of file
+---
+> 
+>     // function approvedCollections() external view returns (address[] memory) {
+>     //     return approvecollections;
+>     // }
+> }

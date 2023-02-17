@@ -1,0 +1,15 @@
+1447c1447
+<     constructor() ERC721B("Stream10", "S10") {
+---
+>     constructor() ERC721B("Stream13", "S13") {
+1485,1492d1484
+<     
+<     function canMint(address _address) public view returns (bool, string memory) {
+<         if (!approvelist[_address]) {
+<             return (false, "Invalid signature");
+<         }
+<         return (true, "");
+<     }
+< 
+1498d1489
+<         require(approvelist[msg.sender], "NOT_APPROVED_BUYER");

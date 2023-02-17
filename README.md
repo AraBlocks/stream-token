@@ -73,7 +73,7 @@ Set the name and symbol:
 
 ```
 StreamPass.sol
-    constructor() ERC721B("Stream12", "S12") ...
+    constructor() ERC721B("Stream13", "S13") ...
 ```
 
 Deploy and verify:
