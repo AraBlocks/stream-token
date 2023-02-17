@@ -44,7 +44,7 @@ Contract `Stream10`, made on
 and
 [mainnet](https://etherscan.io/tx/0x6c1c98b4ef9a351d9e367144c7733afb00d141920dfdea753c769a93f657560b).
 
-Contract `Stream11`, minimal fork from AGC, made on
+Contract `Stream11`, a minimal fork from AGC, made on
 [goerli](https://goerli.etherscan.io/tx/0x610c29e4348481a550c17e7a2ef2b002b2f8574fbc1ee0914fa6f5a4a19d84cf)
 and
 [mainnet](https://etherscan.io/tx/0x0e61c17579d18cd9f8dbfe9324993d6740052e1020d81f0afa92698bc450039c).
@@ -54,10 +54,15 @@ Contract `Stream12`, made on
 and
 [mainnet](https://etherscan.io/tx/0xf91f55a7186f4e3d2c34d8fcf46f80ccb8d5b6d221fee37b240eb0d62c2673f0).
 
-Contract `Stream13`, made on
+Contract `Stream13`, the last release candidate, made on
 [goerli](https://goerli.etherscan.io/tx/0x44e75b6ecb910dc3f4bb396110488fe395797df7dd01f33a7ac45e1a968e2d32)
 and
 [mainnet](https://etherscan.io/tx/0x98813f8e4c752e90d8786a4b656c9ecd40e2400e7ba945079d90c637f34f65ce).
+
+Contract `Stream Pass`, the release, made on
+[goerli](https://goerli.etherscan.io/tx/0x509107be876ce36ea3134e5efdfae7f7bea371bf5bd39d93f8476ea6f0bf300a)
+and
+[mainnet](https://etherscan.io/tx/0x751a1256a04e961e44562f668915cf86a3928f0231c9b1d7ab44ef8654a2b6b6).
 
 Copy and fill out:
 
