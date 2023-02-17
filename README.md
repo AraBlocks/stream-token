@@ -54,6 +54,11 @@ Contract `Stream12`, made on
 and
 [mainnet](https://etherscan.io/tx/0xf91f55a7186f4e3d2c34d8fcf46f80ccb8d5b6d221fee37b240eb0d62c2673f0).
 
+Contract `Stream13`, made on
+[goerli](https://goerli.etherscan.io/tx/0x44e75b6ecb910dc3f4bb396110488fe395797df7dd01f33a7ac45e1a968e2d32)
+and
+[mainnet](https://etherscan.io/tx/0x98813f8e4c752e90d8786a4b656c9ecd40e2400e7ba945079d90c637f34f65ce).
+
 Copy and fill out:
 
 ```
