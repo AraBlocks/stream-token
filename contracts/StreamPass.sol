@@ -1423,8 +1423,8 @@ contract StreamPass is Ownable, ERC721Royalty {
     using Strings for uint256;
     using ECDSA for bytes32;
 
-    uint256 public constant FR_PUBLIC = 9900;
-    uint256 public constant FR_GIFT = 100;
+    uint256 public constant FR_PUBLIC = 9750;
+    uint256 public constant FR_GIFT = 250;
     uint256 public constant FR_PER_MINT = 100;
     uint256 public giftedAmount;
     uint256 public FR_PRICE;
