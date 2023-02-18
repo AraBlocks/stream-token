@@ -1,0 +1,68 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Documents\\code\\code16\\stream-token\\contracts\\StreamPass.sol": {
+      "lastModificationDate": 1676681593640,
+      "contentHash": "b6963ce8c39ef41f1628efd179a5ee0a",
+      "sourceName": "contracts/StreamPass.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17",
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "Address",
+        "Context",
+        "ECDSA",
+        "ERC165",
+        "ERC2981",
+        "ERC721B",
+        "ERC721Royalty",
+        "IERC165",
+        "IERC2981",
+        "IERC721",
+        "IERC721Metadata",
+        "IERC721Receiver",
+        "Ownable",
+        "StreamPass",
+        "Strings"
+      ]
+    }
+  }
+}

@@ -59,10 +59,15 @@ Contract `Stream13`, the last release candidate, made on
 and
 [mainnet](https://etherscan.io/tx/0x98813f8e4c752e90d8786a4b656c9ecd40e2400e7ba945079d90c637f34f65ce).
 
-Contract `Stream Pass`, the release, made on
+Contract `Stream Pass`, a test release, made on
 [goerli](https://goerli.etherscan.io/tx/0x509107be876ce36ea3134e5efdfae7f7bea371bf5bd39d93f8476ea6f0bf300a)
 and
 [mainnet](https://etherscan.io/tx/0x751a1256a04e961e44562f668915cf86a3928f0231c9b1d7ab44ef8654a2b6b6).
+
+Contract `Stream Pass`, the final release, made on
+[goerli](https://goerli.etherscan.io/tx/0xa29812719f8a6aa9c9d6f50332f30cc141bb25d69d192de67a4f30dc2a13feda)
+and
+[mainnet](https://etherscan.io/tx/0x3232ad0363a6dba5e0af8daba90f68eb4164536e6eaa72324bc4b2dda37a4322).
 
 Copy and fill out:
 
